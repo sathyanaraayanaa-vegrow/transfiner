@@ -58,7 +58,8 @@ def pos_embed(x, temperature=10000, scale=2 * math.pi, normalize=True):
     assert num_pos_feats * 2 == channel, (
         'The input channel number must be an even number.')
     dim_t = torch.arange(num_pos_feats, dtype=torch.float32, device=x.device)
-    dim_t = temperature ** (2 * (dim_t // 2) / num_pos_feats)
+    # dim_t = temperature ** (2 * (dim_t // 2) / num_pos_feats)
+    dim_t = temperature ** (2 * torch.div(dim_t, 2, rounding_mode='trunc') / num_pos_feats)
 
     pos_x = x_embed[:, :, :, None] / dim_t
     pos_y = y_embed[:, :, :, None] / dim_t
